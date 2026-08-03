@@ -1,0 +1,45 @@
+name: Scheduled event scrape
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Optional source ID (dcase, cpl, choose-chicago)
+        required: false
+        type: string
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chifree-production-scraper
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SCRAPER_CONTACT_EMAIL: ${{ secrets.SCRAPER_CONTACT_EMAIL }}
+      GEOCODER_ENABLED: "true"
+      INCLUDE_SEED_FALLBACK: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate:postgres
+      - name: Scrape configured sources
+        env:
+          REQUESTED_SOURCE: ${{ inputs.source }}
+        run: |
+          if [ -n "$REQUESTED_SOURCE" ]; then
+            npm run scrape -- --source="$REQUESTED_SOURCE"
+          else
+            npm run scrape
+          fi

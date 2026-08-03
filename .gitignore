@@ -1,0 +1,17 @@
+/node_modules
+/.next
+/out
+/coverage
+/playwright-report
+/test-results
+/.wrangler
+/.vinext
+.env*
+!.env.example
+prisma/*.db
+prisma/*.db-journal
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+*.pem
+npm-debug.log*

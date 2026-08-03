@@ -1,0 +1,22 @@
+{
+  "people": [
+    { "name": "Barack Obama", "aliases": ["President Barack Obama"], "category": "politician", "chicagoRelevance": "high" },
+    { "name": "Michelle Obama", "aliases": ["First Lady Michelle Obama"], "category": "author", "chicagoRelevance": "high" },
+    { "name": "Chance the Rapper", "aliases": ["Chancelor Bennett"], "category": "musician", "chicagoRelevance": "high" },
+    { "name": "Common", "aliases": ["Lonnie Rashid Lynn"], "category": "musician", "chicagoRelevance": "high" },
+    { "name": "Jennifer Hudson", "aliases": ["JHud"], "category": "performer", "chicagoRelevance": "high" },
+    { "name": "Oprah Winfrey", "aliases": ["Oprah"], "category": "media", "chicagoRelevance": "high" },
+    { "name": "Dwyane Wade", "aliases": ["D-Wade"], "category": "athlete", "chicagoRelevance": "high" },
+    { "name": "Candace Parker", "aliases": [], "category": "athlete", "chicagoRelevance": "high" },
+    { "name": "Scottie Pippen", "aliases": [], "category": "athlete", "chicagoRelevance": "high" },
+    { "name": "Michael Jordan", "aliases": ["MJ"], "category": "athlete", "chicagoRelevance": "high" },
+    { "name": "Ayo Edebiri", "aliases": [], "category": "actor", "chicagoRelevance": "medium" },
+    { "name": "Jeremy Allen White", "aliases": [], "category": "actor", "chicagoRelevance": "medium" },
+    { "name": "Rick Bayless", "aliases": [], "category": "chef", "chicagoRelevance": "high" },
+    { "name": "Stephanie Izard", "aliases": [], "category": "chef", "chicagoRelevance": "high" },
+    { "name": "José Andrés", "aliases": ["Jose Andres"], "category": "chef", "chicagoRelevance": "medium" },
+    { "name": "Brandon Johnson", "aliases": ["Mayor Brandon Johnson"], "category": "politician", "chicagoRelevance": "high" },
+    { "name": "J.B. Pritzker", "aliases": ["JB Pritzker", "Governor Pritzker"], "category": "politician", "chicagoRelevance": "high" },
+    { "name": "Nick Offerman", "aliases": [], "category": "actor", "chicagoRelevance": "medium" }
+  ]
+}

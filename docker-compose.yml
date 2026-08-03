@@ -1,0 +1,52 @@
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chifree
+      POSTGRES_USER: chifree
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chifree -d chifree"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    volumes:
+      - chifree-postgres:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://chifree:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@database:5432/chifree?schema=public
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in .env}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      SCRAPER_CONTACT_EMAIL: ${SCRAPER_CONTACT_EMAIL:-ops@example.invalid}
+      GEOCODER_ENABLED: ${GEOCODER_ENABLED:-false}
+      INCLUDE_SEED_FALLBACK: "false"
+    command: ["sh", "-c", "npm run db:migrate:deploy && npm run db:seed && npm run start"]
+    ports:
+      - "3000:3000"
+
+  scheduler:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://chifree:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@database:5432/chifree?schema=public
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in .env}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      SCRAPER_CONTACT_EMAIL: ${SCRAPER_CONTACT_EMAIL:-ops@example.invalid}
+      SCRAPER_FREQUENT_SOURCES: ${SCRAPER_FREQUENT_SOURCES:-choose-chicago}
+      SCRAPER_DAILY_SOURCES: ${SCRAPER_DAILY_SOURCES:-dcase,cpl}
+      GEOCODER_ENABLED: ${GEOCODER_ENABLED:-false}
+      INCLUDE_SEED_FALLBACK: "false"
+    command: ["npm", "run", "scheduler"]
+
+volumes:
+  chifree-postgres:
